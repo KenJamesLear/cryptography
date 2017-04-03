@@ -4,19 +4,20 @@ import java.util.Random;
 public class MillerRabinPrimeTest {
 	private BigInteger n;
 	private BigInteger a;
+	private BigInteger nMinusOne;
 	private static BigInteger zero = BigInteger.ZERO;
 	private static BigInteger one = BigInteger.ONE;
 	private static BigInteger two = one.add(one);
-	private static BigInteger negativeOne = one.subtract(two);
-	
 	
 	public MillerRabinPrimeTest(String inputN, String inputA){
 		n = new BigInteger(inputN);
 		a = new BigInteger(inputA);
+		nMinusOne = n.subtract(one);
 	}
 	
 	public MillerRabinPrimeTest(String inputN){
 		n = new BigInteger(inputN);
+		nMinusOne = n.subtract(one);
 	}
 	
 	
@@ -26,25 +27,41 @@ public class MillerRabinPrimeTest {
 		BigInteger m = mFinder(n);
 		BigInteger b = a.modPow(m, n);
 		int bNumber = 0;
+		
+		//special case to ask about
+		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
+		System.out.println("Special case: " + specialCase);
+		
 		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
-		if ((b.equals(BigInteger.ONE)) || (b.equals(negativeOne)))
+		if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
 			result = true;
 		else	
 		{
+			//int test = 0;
 			while(true){
 				bNumber++;
 				BigInteger bNext = b.modPow(two, n);
 				System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
+				//special case to ask about
+				if (bNext.equals(b)){
+					break;
+				}
+				//special case to ask about
+				if(bNext.equals(specialCase)){
+					break;
+				}
 				if (bNext.equals(one)){
 					break;
 				}
-				else if (bNext.equals(negativeOne)){
+				else if (bNext.equals(nMinusOne)){
 					result = true;
 					break;
 				}
 				else{
 					b = bNext;
 				}
+				//test++;
 			}
 		}
 		
@@ -52,7 +69,8 @@ public class MillerRabinPrimeTest {
 			System.out.println(n + " is probably prime");
 		}
 		else{
-			System.out.println(n + " is probably composite");
+			System.out.println(n + " is composite and gcd(" + n + "," + b.subtract(one) + ")" + 
+					"is a non-trivial factor");
 		}
 	}
 	
