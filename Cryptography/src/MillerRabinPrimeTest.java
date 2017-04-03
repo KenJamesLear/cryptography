@@ -2,7 +2,22 @@ import java.util.Scanner;
 import java.math.BigInteger;
 
 public class MillerRabinPrimeTest {
-	public static void main(String[] args){
+	private BigInteger n;
+	private BigInteger a;
+	public MillerRabinPrimeTest(String inputN, String inputA){
+		n = new BigInteger(inputN);
+		a = new BigInteger(inputA);
+	}
+	
+	public boolean run(){
+		boolean result = false;
+		
+		return result;
+	}
+	
+	
+	
+	/*public static void main(String[] args){
 		
 		//test commint two line
 		BigInteger one = BigInteger.ONE;
@@ -38,11 +53,11 @@ public class MillerRabinPrimeTest {
 		BigInteger a = new BigInteger(inputA);
 		
 		//test modpow
-		/*BigInteger one = BigInteger.ONE;
+		BigInteger one = BigInteger.ONE;
 		BigInteger two = one.add(one);
 		BigInteger three = two.add(one);
 		BigInteger test = two.modPow(two, three);
-		System.out.println("test = " + test);*/
+		System.out.println("test = " + test);
 		
 		//begin step 3
 		BigInteger b = a.modPow(m, n);
@@ -83,5 +98,5 @@ public class MillerRabinPrimeTest {
 		System.out.println("k equal = " + k);
 		
 		return m;
-	}
+	}*/
 }
