@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.Random;
 
 public class MillerRabinPrimeTest {
 	private BigInteger n;
@@ -12,6 +13,10 @@ public class MillerRabinPrimeTest {
 	public MillerRabinPrimeTest(String inputN, String inputA){
 		n = new BigInteger(inputN);
 		a = new BigInteger(inputA);
+	}
+	
+	public MillerRabinPrimeTest(String inputN){
+		n = new BigInteger(inputN);
 	}
 	
 	
@@ -51,6 +56,10 @@ public class MillerRabinPrimeTest {
 		}
 	}
 	
+	public void run(int numOfA){
+		
+	}
+	
 	private static boolean isOdd(BigInteger n){
 		return !n.mod(new BigInteger("2")).equals(BigInteger.ZERO);
 	}
@@ -72,7 +81,7 @@ public class MillerRabinPrimeTest {
 		}
 		
 		//test lines
-		//System.out.println("m equal = " + m);
+		System.out.println("m equal = " + m);
 		//System.out.println("k equal = " + k);
 		
 		return m;

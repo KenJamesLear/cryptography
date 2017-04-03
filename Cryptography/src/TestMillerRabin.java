@@ -9,14 +9,24 @@ public class TestMillerRabin {
 		BigInteger n = new BigInteger(inputN);
 		BigInteger nMinusOne = n.subtract(BigInteger.ONE);
 		//begin here with option A
-		System.out.println("Choose a random Integer such that it's greater "
-				+ "than 1 and less than " + nMinusOne + ":" );
-		String inputA = scanner.nextLine();
-		
+		System.out.println("Select one of the following options:");
+		System.out.println("1: Choose the a you want to use");
+		System.out.println("2: Choose number of random a's tested");
+		int choice = Integer.parseInt(scanner.nextLine());
+		if (choice == 1){
+			System.out.println("Choose a random Integer such that it's greater "
+					+ "than 1 and less than " + nMinusOne + ":" );
+			String inputA = scanner.nextLine();
+			MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN, inputA);
+			test.run();
+		}
+		else if (choice ==2){
+			System.out.println("Choose number of random a's to test:");
+			int numOfA = scanner.nextInt();
+			MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN);
+			test.run(numOfA);
+		}
 		scanner.close();
-		MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN, inputA);
-		test.run();
-		
 	}
 
 	
