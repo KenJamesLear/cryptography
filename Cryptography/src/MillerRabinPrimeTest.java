@@ -31,7 +31,7 @@ public class MillerRabinPrimeTest {
 		//special case to ask about
 		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
 		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
-		System.out.println("Special case: " + specialCase);
+		//System.out.println("Special case: " + specialCase);
 		
 		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
 		if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
