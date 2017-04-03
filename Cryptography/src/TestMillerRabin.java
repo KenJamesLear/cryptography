@@ -8,6 +8,7 @@ public class TestMillerRabin {
 		String inputN = scanner.nextLine();
 		BigInteger n = new BigInteger(inputN);
 		BigInteger nMinusOne = n.subtract(BigInteger.ONE);
+		//begin here with option A
 		System.out.println("Choose a random Integer such that it's greater "
 				+ "than 1 and less than " + nMinusOne + ":" );
 		String inputA = scanner.nextLine();
