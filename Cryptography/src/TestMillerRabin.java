@@ -11,7 +11,6 @@ public class TestMillerRabin {
 		System.out.println("Choose a random Integer such that it's greater "
 				+ "than 1 and less than " + nMinusOne + ":" );
 		String inputA = scanner.nextLine();
-		
 		scanner.close();
 		MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN, inputA);
 		test.run();

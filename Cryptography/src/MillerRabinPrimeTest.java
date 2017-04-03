@@ -3,15 +3,16 @@ import java.math.BigInteger;
 public class MillerRabinPrimeTest {
 	private BigInteger n;
 	private BigInteger a;
+	private BigInteger nMinusOne;
 	private static BigInteger zero = BigInteger.ZERO;
 	private static BigInteger one = BigInteger.ONE;
 	private static BigInteger two = one.add(one);
-	private static BigInteger negativeOne = one.subtract(two);
 	
 	
 	public MillerRabinPrimeTest(String inputN, String inputA){
 		n = new BigInteger(inputN);
 		a = new BigInteger(inputA);
+		nMinusOne = n.subtract(one);
 	}
 	
 	
@@ -22,7 +23,7 @@ public class MillerRabinPrimeTest {
 		BigInteger b = a.modPow(m, n);
 		int bNumber = 0;
 		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
-		if ((b.equals(BigInteger.ONE)) || (b.equals(negativeOne)))
+		if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
 			result = true;
 		else	
 		{
@@ -33,7 +34,7 @@ public class MillerRabinPrimeTest {
 				if (bNext.equals(one)){
 					break;
 				}
-				else if (bNext.equals(negativeOne)){
+				else if (bNext.equals(nMinusOne)){
 					result = true;
 					break;
 				}
