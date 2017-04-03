@@ -1,9 +1,11 @@
-import java.util.Scanner;
 import java.math.BigInteger;
 
 public class MillerRabinPrimeTest {
 	private BigInteger n;
 	private BigInteger a;
+	private BigInteger one = BigInteger.ONE;
+	
+	
 	public MillerRabinPrimeTest(String inputN, String inputA){
 		n = new BigInteger(inputN);
 		a = new BigInteger(inputA);
@@ -12,10 +14,41 @@ public class MillerRabinPrimeTest {
 	public boolean run(){
 		boolean result = false;
 		
+		BigInteger m = mFinder(n);
+		
 		return result;
 	}
 	
+	public static boolean isOdd(BigInteger n){
+		return !n.mod(new BigInteger("2")).equals(BigInteger.ZERO);
+	}
 	
+	public static BigInteger mFinder(BigInteger n){
+		//need to comment this
+		BigInteger one = BigInteger.ONE;
+		BigInteger two = one.add(one);
+		BigInteger m = BigInteger.ZERO;
+		BigInteger temp = BigInteger.ZERO;
+		BigInteger nMinusOne = n.subtract(one);
+		int k = 0;
+		while(true){
+			k++;
+			temp = nMinusOne.mod(two.pow(k));
+			if (temp.equals(BigInteger.ZERO)){
+				m = nMinusOne.divide(two.pow(k));
+				if (isOdd(m))
+					break;
+			}
+		}
+		
+		//test lines
+		//System.out.println("m equal = " + m);
+		//System.out.println("k equal = " + k);
+		
+		return m;
+	}
+	
+}	
 	
 	/*public static void main(String[] args){
 		
@@ -69,34 +102,5 @@ public class MillerRabinPrimeTest {
 		}
 		
 		scanner.close();
-	}
-	
-	public static boolean isOdd(BigInteger n){
-		return !n.mod(new BigInteger("2")).equals(BigInteger.ZERO);
-	}
-	
-	public static BigInteger mFinder(BigInteger n){
-		//need to comment this
-		BigInteger one = BigInteger.ONE;
-		BigInteger two = one.add(one);
-		BigInteger m = BigInteger.ZERO;
-		BigInteger temp = BigInteger.ZERO;
-		BigInteger nMinusOne = n.subtract(one);
-		int k = 0;
-		while(true){
-			k++;
-			temp = nMinusOne.mod(two.pow(k));
-			if (temp.equals(BigInteger.ZERO)){
-				m = nMinusOne.divide(two.pow(k));
-				if (isOdd(m))
-					break;
-			}
-		}
-		
-		//test lines
-		System.out.println("m equal = " + m);
-		System.out.println("k equal = " + k);
-		
-		return m;
 	}*/
-}
+	

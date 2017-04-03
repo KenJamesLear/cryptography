@@ -11,7 +11,7 @@ public class TestMillerRabin {
 		String inputA = scanner.nextLine();
 		
 		MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN, inputA);
-		
+		test.run();
 	}
 
 	
