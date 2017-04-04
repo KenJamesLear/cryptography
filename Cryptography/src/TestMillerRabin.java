@@ -8,7 +8,7 @@ public class TestMillerRabin {
 		String inputN = scanner.nextLine();
 		BigInteger n = new BigInteger(inputN);
 		BigInteger nMinusOne = n.subtract(BigInteger.ONE);
-<<<<<<< HEAD
+
 		//begin here with option A
 		System.out.println("Select one of the following options:");
 		System.out.println("1: Choose the a you want to use");
@@ -27,11 +27,11 @@ public class TestMillerRabin {
 			MillerRabinPrimeTest test = new MillerRabinPrimeTest(inputN);
 			test.run(numOfA);
 		}
-=======
+
 		System.out.println("Choose a random Integer such that it's greater "
 				+ "than 1 and less than " + nMinusOne + ":" );
 		String inputA = scanner.nextLine();
->>>>>>> refs/remotes/origin/master
+
 		scanner.close();
 	}
 
