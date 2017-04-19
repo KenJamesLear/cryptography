@@ -1,7 +1,10 @@
+//Program that actually computes and executes the Miller Rabin Primality test
+
 import java.math.BigInteger;
 import java.util.Random;
 
 public class MillerRabinPrimeTest {
+	//creation of global variables that are used in various functions of the test
 	private BigInteger n;
 	private BigInteger a;
 	private BigInteger nMinusOne;
@@ -9,98 +12,133 @@ public class MillerRabinPrimeTest {
 	private static BigInteger one = BigInteger.ONE;
 	private static BigInteger two = one.add(one);
 	
+	//Creation of test object with n and a being known
 	public MillerRabinPrimeTest(String inputN, String inputA){
 		n = new BigInteger(inputN);
 		a = new BigInteger(inputA);
 		nMinusOne = n.subtract(one);
 	}
 	
+	//Creation of test object with n known and a is unknown
+	//a has a default value of one here
 	public MillerRabinPrimeTest(String inputN){
 		n = new BigInteger(inputN);
 		nMinusOne = n.subtract(one);
+		a = one;
 	}
 	
-	
+	//Running the test with 'a' value assumed to be known, by default is one
 	public void run(){
+		// things result is false until proven otherwise, thus default is false
 		boolean result = false;
 		
+		//determine what m could be by using m finder
 		BigInteger m = mFinder(n);
+		//calculate what the first b should be by using b = a^m (mod n)
 		BigInteger b = a.modPow(m, n);
+		//this is a counter to currently show what number b we are using 
 		int bNumber = 0;
 		
-		//special case to ask about
-		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
-		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
+		//TODO: Print values before test is ran
+		
+		//TODO: special case to ask about
+		//BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+		//BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
 		//System.out.println("Special case: " + specialCase);
 		
+		//Print out first b and it's value
 		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
+		//If first b equals 1 or -1 (which is n-1) then result is true
 		if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
+			//set result to true because n is prime in this case
 			result = true;
+		//else the test continues
 		else	
 		{
-			//int test = 0;
-			while(true){
+			//
+			//TODO: change amount of tests running? ask about this
+			while(bNumber<101){
+				//raise the interval of the bNumber
 				bNumber++;
+				//get the next b by having it equal previous b^2 mod n
 				BigInteger bNext = b.modPow(two, n);
+				//Print out result of the new b number
 				System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
-				//special case to ask about
+				
+				// TODO: special case to ask about
 				if (bNext.equals(b)){
 					break;
 				}
-				//special case to ask about
-				if(bNext.equals(specialCase)){
+				
+				// TODO special case to ask about
+				/*if(bNext.equals(specialCase)){
 					break;
-				}
+				}*/
+				
+				//if current b equal one break out of loop
 				if (bNext.equals(one)){
 					break;
 				}
+				//if b equals -1 (being the same as n-1), break out of loop
 				else if (bNext.equals(nMinusOne)){
+					//set result to true because it is prime in this case
 					result = true;
 					break;
 				}
+				//if everything is false then loop to the next b
 				else{
 					b = bNext;
 				}
-				//test++;
+				
+			}
+			//shows that max tests have been reached so test doesn't go on forever
+			if (bNumber == 100){
+				System.out.println("Max Tests reached");
 			}
 		}
 		
+	
+		//TODO: move this to TestMillerRabin
+		//if result is true then say n is probably prime
 		if (result){
 			System.out.println(n + " is probably prime");
 		}
+		//else say that n is composite and show the non-trivial factor
 		else{
+			//TODO: calculate gcd for BigIntegers
 			System.out.println(n + " is composite and gcd(" + n + "," + b.subtract(one) + ")" + 
 					"is a non-trivial factor");
 		}
 	}
 	
 	public void run(int numOfA){
-		
+		//TODO: implement this
 	}
 	
+	//TODO make separate class?
 	private static boolean isOdd(BigInteger n){
+		// checks if 0 = n (mod 2) and returns opposite result
+		//if the statement is true then n is even meaning not odd and vice versa
 		return !n.mod(new BigInteger("2")).equals(BigInteger.ZERO);
 	}
 	
 	private static BigInteger mFinder(BigInteger n){
-		//need to comment this
+		//set variable that will be used
 		BigInteger m = zero;
 		BigInteger temp = zero;
 		BigInteger nMinusOne = n.subtract(one);
 		int k = 0;
+		//loops through until if finds an m where 2^k * m = n where m is odd
 		while(true){
 			k++;
 			temp = nMinusOne.mod(two.pow(k));
 			if (temp.equals(zero)){
 				m = nMinusOne.divide(two.pow(k));
+				//breaks if m is odd
 				if (isOdd(m))
 					break;
 			}
 		}
-		
-		//test lines
-		System.out.println("m equal = " + m);
-		//System.out.println("k equal = " + k);
 		
 		return m;
 	}
