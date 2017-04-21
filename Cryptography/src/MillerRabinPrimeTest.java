@@ -2,6 +2,7 @@
 
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.LinkedList;
 
 public class MillerRabinPrimeTest {
 	//creation of global variables that are used in various functions of the test
@@ -39,12 +40,14 @@ public class MillerRabinPrimeTest {
 		//this is a counter to currently show what number b we are using 
 		int bNumber = 0;
 		
-		//TODO: Print values before test is ran
+		System.out.println("n = " + n);
+		System.out.println("a = " + a);
+		System.out.println("m = " + m);
 		
-		//TODO: special case to ask about
-		//BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
-		//BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
-		//System.out.println("Special case: " + specialCase);
+		//TODO comment this case
+		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
+		System.out.println("Special case: " + specialCase);
 		
 		//Print out first b and it's value
 		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
@@ -55,28 +58,29 @@ public class MillerRabinPrimeTest {
 		//else the test continues
 		else	
 		{
-			//
-			//TODO: change amount of tests running? ask about this
-			while(bNumber<101){
+			//make a list to hold all bValues so that we can compare to see if there is an infinite loop 
+			//while running the test, thus meaning the n is composite
+			LinkedList<BigInteger> bValues = new LinkedList<BigInteger>();
+			while(true){
 				//raise the interval of the bNumber
 				bNumber++;
 				//get the next b by having it equal previous b^2 mod n
+				bValues.add(b);
 				BigInteger bNext = b.modPow(two, n);
 				//Print out result of the new b number
 				System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
-				
-				// TODO: special case to ask about
-				if (bNext.equals(b)){
+				//If the next b value is the same as a previous b value, then break out of loop
+				if (bValues.contains(bNext))
+				{
+					break;
+				}
+				//If bNext equals the special case value, break out of loop
+				else if(bNext.equals(specialCase)){
 					break;
 				}
 				
-				// TODO special case to ask about
-				/*if(bNext.equals(specialCase)){
-					break;
-				}*/
-				
 				//if current b equal one break out of loop
-				if (bNext.equals(one)){
+				else if (bNext.equals(one)){
 					break;
 				}
 				//if b equals -1 (being the same as n-1), break out of loop
