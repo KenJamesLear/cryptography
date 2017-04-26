@@ -6,9 +6,9 @@ import java.util.LinkedList;
 
 public class MillerRabinPrimeTest {
 	//creation of global variables that are used in various functions of the test
-	private BigInteger n;
-	private BigInteger a;
-	private BigInteger nMinusOne;
+	private static BigInteger n;
+	private static BigInteger a;
+	private static BigInteger nMinusOne;
 	private static BigInteger zero = BigInteger.ZERO;
 	private static BigInteger one = BigInteger.ONE;
 	private static BigInteger two = one.add(one);
@@ -44,7 +44,9 @@ public class MillerRabinPrimeTest {
 		System.out.println("a = " + a);
 		System.out.println("m = " + m);
 		
-		//TODO comment this case
+		//special case
+		//Checking to see find value of  a^((n-1)/2) 
+		//While in main loop of algorithm, if this value = current b value then n is composite
 		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
 		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
 		System.out.println("Special case: " + specialCase);
@@ -101,25 +103,13 @@ public class MillerRabinPrimeTest {
 			}
 		}
 		
-	
-		//TODO: move this to TestMillerRabin
-		//if result is true then say n is probably prime
-		if (result){
-			System.out.println(n + " is probably prime");
-		}
-		//else say that n is composite and show the non-trivial factor
-		else{
-			//TODO: calculate gcd for BigIntegers
-			System.out.println(n + " is composite and gcd(" + n + "," + b.subtract(one) + ")" + 
-					"is a non-trivial factor");
-		}
+		displayResult(result, b);
 	}
 	
 	public void run(int numOfA){
 		//TODO: implement this
 	}
 	
-	//TODO make separate class?
 	private static boolean isOdd(BigInteger n){
 		// checks if 0 = n (mod 2) and returns opposite result
 		//if the statement is true then n is even meaning not odd and vice versa
@@ -145,6 +135,19 @@ public class MillerRabinPrimeTest {
 		}
 		
 		return m;
+	}
+	
+	private void displayResult(boolean result, BigInteger b){
+		if (result){
+			System.out.println(n + " is probably prime");
+		}
+		//else say that n is composite and show the non-trivial factor
+		else{
+			//TODO: calculate gcd for BigIntegers
+			//TODO: find a way to deal with the infinite loop case that occurs here
+			System.out.println(n + " is composite and gcd(" + n + "," + b.subtract(one) + ")" + 
+					"is a non-trivial factor");
+		}
 	}
 	
 }	
