@@ -3,12 +3,14 @@
 import java.math.BigInteger;
 import java.util.Random;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class MillerRabinPrimeTest {
 	//creation of global variables that are used in various functions of the test
 	private static BigInteger n;
 	private static BigInteger a;
 	private static BigInteger nMinusOne;
+	private static BigInteger bForDisplay;
 	private static BigInteger zero = BigInteger.ZERO;
 	private static BigInteger one = BigInteger.ONE;
 	private static BigInteger two = one.add(one);
@@ -30,84 +32,28 @@ public class MillerRabinPrimeTest {
 	
 	//Running the test with 'a' value assumed to be known, by default is one
 	public void run(){
-		// things result is false until proven otherwise, thus default is false
-		boolean result = false;
-		
-		//determine what m could be by using m finder
-		BigInteger m = mFinder(n);
-		//calculate what the first b should be by using b = a^m (mod n)
-		BigInteger b = a.modPow(m, n);
-		//this is a counter to currently show what number b we are using 
-		int bNumber = 0;
-		
-		System.out.println("n = " + n);
-		System.out.println("a = " + a);
-		System.out.println("m = " + m);
-		
-		//special case
-		//Checking to see find value of  a^((n-1)/2) 
-		//While in main loop of algorithm, if this value = current b value then n is composite
-		BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
-		BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
-		System.out.println("Special case: " + specialCase);
-		
-		//Print out first b and it's value
-		System.out.println("B"+ bNumber + " = " + b + " mod " + n);
-		//If first b equals 1 or -1 (which is n-1) then result is true
-		if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
-			//set result to true because n is prime in this case
-			result = true;
-		//else the test continues
-		else	
-		{
-			//make a list to hold all bValues so that we can compare to see if there is an infinite loop 
-			//while running the test, thus meaning the n is composite
-			LinkedList<BigInteger> bValues = new LinkedList<BigInteger>();
-			while(true){
-				//raise the interval of the bNumber
-				bNumber++;
-				//get the next b by having it equal previous b^2 mod n
-				bValues.add(b);
-				BigInteger bNext = b.modPow(two, n);
-				//Print out result of the new b number
-				System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
-				//If the next b value is the same as a previous b value, then break out of loop
-				if (bValues.contains(bNext))
-				{
-					break;
-				}
-				//If bNext equals the special case value, break out of loop
-				else if(bNext.equals(specialCase)){
-					break;
-				}
-				
-				//if current b equal one break out of loop
-				else if (bNext.equals(one)){
-					break;
-				}
-				//if b equals -1 (being the same as n-1), break out of loop
-				else if (bNext.equals(nMinusOne)){
-					//set result to true because it is prime in this case
-					result = true;
-					break;
-				}
-				//if everything is false then loop to the next b
-				else{
-					b = bNext;
-				}
-				
-			}
-			//shows that max tests have been reached so test doesn't go on forever
-			if (bNumber == 100){
-				System.out.println("Max Tests reached");
-			}
-		}
-		
-		displayResult(result, b);
+		boolean result;
+		result = calculate();
+		displayResult(result);
 	}
 	
 	public void run(int numOfA){
-		//TODO: implement this
+		boolean result[] = new boolean[numOfA];
+		//TODO: make loop for results
+		for (int i = 0; i < numOfA; i++){
+		 a = randomize(n);
+		 System.out.println("a for this test is : " + a);
+		 result[i]=calculate();
+		 System.out.println(result[i]);
+		}
+		boolean finalResult = areAllTrue(result);
+		 displayResult(finalResult);
+	}
+	
+	public static boolean areAllTrue(boolean[] array)
+	{
+	    for(boolean b : array) if(!b) return false;
+	    return true;
 	}
 	
 	private static boolean isOdd(BigInteger n){
@@ -137,7 +83,7 @@ public class MillerRabinPrimeTest {
 		return m;
 	}
 	
-	private void displayResult(boolean result, BigInteger b){
+	private void displayResult(boolean result){
 		if (result){
 			System.out.println(n + " is probably prime");
 		}
@@ -145,10 +91,94 @@ public class MillerRabinPrimeTest {
 		else{
 			//TODO: calculate gcd for BigIntegers
 			//TODO: find a way to deal with the infinite loop case that occurs here
-			System.out.println(n + " is composite and gcd(" + n + "," + b.subtract(one) + ")" + 
+			System.out.println(n + " is composite and gcd(" + n + "," + bForDisplay.subtract(one) + ")" + 
 					"is a non-trivial factor");
 		}
 	}
+	
+	private BigInteger randomize(BigInteger max){
+		BigInteger result = zero;	
+		Random rnd = new Random();
+		do {
+		    result = new BigInteger(n.bitLength(), rnd);
+		} while ((result.compareTo(n) >= 0) || (result.signum() != 1));
+		return result;
+	}
+	
+	
+	private boolean calculate(){
+		// things result is false until proven otherwise, thus default is false
+				boolean result = false;
+				
+				//determine what m could be by using m finder
+				BigInteger m = mFinder(n);
+				//calculate what the first b should be by using b = a^m (mod n)
+				BigInteger b = a.modPow(m, n);
+				//this is a counter to currently show what number b we are using 
+				int bNumber = 0;
+				
+				System.out.println("n = " + n);
+				System.out.println("a = " + a);
+				System.out.println("m = " + m);
+				
+				//special case
+				//Checking to see find value of  a^((n-1)/2) 
+				//While in main loop of algorithm, if this value = current b value then n is composite
+				/*BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+				BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
+				System.out.println("Special case: " + specialCase);*/
+				
+				//Print out first b and it's value
+				System.out.println("B"+ bNumber + " = " + b + " mod " + n);
+				//If first b equals 1 or -1 (which is n-1) then result is true
+				if ((b.equals(BigInteger.ONE)) || (b.equals(nMinusOne)))
+					//set result to true because n is prime in this case
+					result = true;
+				//else the test continues
+				else	
+				{
+					//make a list to hold all bValues so that we can compare to see if there is an infinite loop 
+					//while running the test, thus meaning the n is composite
+					LinkedList<BigInteger> bValues = new LinkedList<BigInteger>();
+					while(true){
+						//raise the interval of the bNumber
+						bNumber++;
+						//get the next b by having it equal previous b^2 mod n
+						bValues.add(b);
+						BigInteger bNext = b.modPow(two, n);
+						//Print out result of the new b number
+						System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
+						//If the next b value is the same as a previous b value, then break out of loop
+						if (bValues.contains(bNext))
+						{
+							break;
+						}
+						//If bNext equals the special case value, break out of loop
+						/*else if(bNext.equals(specialCase)){
+							break;
+						}*/
+						
+						//if current b equal one break out of loop
+						else if (bNext.equals(one)){
+							break;
+						}
+						//if b equals -1 (being the same as n-1), break out of loop
+						else if (bNext.equals(nMinusOne)){
+							//set result to true because it is prime in this case
+							result = true;
+							break;
+						}
+						//if everything is false then loop to the next b
+						else{
+							b = bNext;
+						}
+						
+					}
+					bForDisplay = b;
+				}
+				return result;
+	}
+	
 	
 }	
 	
