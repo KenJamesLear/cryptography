@@ -124,9 +124,10 @@ public class MillerRabinPrimeTest {
 				//special case
 				//Checking to see find value of  a^((n-1)/2) 
 				//While in main loop of algorithm, if this value = current b value then n is composite
-				/*BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+				BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
 				BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
-				System.out.println("Special case: " + specialCase);*/
+				//test line to see special case output
+				System.out.println("Special case: " + specialCase);
 				
 				//Print out first b and it's value
 				System.out.println("B"+ bNumber + " = " + b + " mod " + n);
@@ -149,14 +150,24 @@ public class MillerRabinPrimeTest {
 						//Print out result of the new b number
 						System.out.println("B"+ bNumber + " = " + bNext + " mod " + n);
 						//If the next b value is the same as a previous b value, then break out of loop
-						if (bValues.contains(bNext))
+						//if current b equal one break out of loop
+						if (bNext.equals(one)){
+							break;
+						}
+						//if b equals -1 (being the same as n-1), break out of loop
+						else if (bNext.equals(nMinusOne)){
+							//set result to true because it is prime in this case
+							result = true;
+							break;
+						}
+						else if (bValues.contains(bNext))
 						{
 							break;
 						}
 						//If bNext equals the special case value, break out of loop
-						/*else if(bNext.equals(specialCase)){
+						else if(bNext.equals(specialCase)){
 							break;
-						}*/
+						}
 						
 						//if current b equal one break out of loop
 						else if (bNext.equals(one)){
