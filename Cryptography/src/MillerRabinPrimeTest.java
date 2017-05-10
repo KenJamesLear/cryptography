@@ -35,20 +35,19 @@ public class MillerRabinPrimeTest {
 	public void run(){
 		boolean result;
 		result = calculate();
-		displayResult(result);
+		displayResult(result, 1);
 	}
 	
 	public void run(int numOfA){
 		boolean result[] = new boolean[numOfA];
-		//TODO: make loop for results
 		for (int i = 0; i < numOfA; i++){
 		 a = randomize(n);
-		 System.out.println("a for this test is : " + a);
+		 System.out.println("----- New test -----");
 		 result[i]=calculate();
 		 System.out.println(result[i]);
 		}
 		boolean finalResult = areAllTrue(result);
-		 displayResult(finalResult);
+		 displayResult(finalResult, 2);
 	}
 	
 	public static boolean areAllTrue(boolean[] array)
@@ -84,16 +83,17 @@ public class MillerRabinPrimeTest {
 		return m;
 	}
 	
-	private void displayResult(boolean result){
+	private void displayResult(boolean result, int code){
 		if (result){
 			System.out.println(n + " is probably prime");
 		}
 		//else say that n is composite and show the non-trivial factor
-		else{
-			//TODO: calculate gcd for BigIntegers
-			//TODO: find a way to deal with the infinite loop case that occurs here
+		else if(!result && code == 1){
 			System.out.println(n + " is composite and gcd(" + n + "," + bForDisplay.subtract(one) + ")" + 
 					"is a non-trivial factor");
+		}
+		else {
+			System.out.println(n + " is composite");
 		}
 	}
 	
@@ -125,10 +125,10 @@ public class MillerRabinPrimeTest {
 				//special case
 				//Checking to see find value of  a^((n-1)/2) 
 				//While in main loop of algorithm, if this value = current b value then n is composite
-				BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
+				/*BigInteger nMinusOnedivTwo = (n.subtract(one)).divide(two);
 				BigInteger specialCase = a.modPow(nMinusOnedivTwo, n);
 				//test line to see special case output
-				System.out.println("Special case: " + specialCase);
+				System.out.println("Special case: " + specialCase);*/
 				
 				//Print out first b and it's value
 				System.out.println("B"+ bNumber + " = " + b + " mod " + n);
@@ -166,9 +166,9 @@ public class MillerRabinPrimeTest {
 							break;
 						}
 						//If bNext equals the special case value, break out of loop
-						else if(bNext.equals(specialCase)){
+						/*else if(bNext.equals(specialCase)){
 							break;
-						}
+						}*/
 						
 						//if current b equal one break out of loop
 						else if (bNext.equals(one)){
